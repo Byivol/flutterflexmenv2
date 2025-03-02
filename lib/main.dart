@@ -6,16 +6,19 @@ import 'screens/authorization/phone_auth_screen.dart' show PhoneAuthScreen;
 
 import 'themes/dark_theme.dart';
 import 'themes/light_theme.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(MainApp());
+  runApp(const MainApp());
   FlutterNativeSplash.remove();
 }
 
@@ -28,10 +31,10 @@ class MainApp extends StatelessWidget {
       showSemanticsDebugger: false,
       debugShowMaterialGrid: false,
       debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.light,
       theme: lightTheme,
-      themeMode: ThemeMode.dark,
       darkTheme: darkTheme,
-      home: PhoneAuthScreen(),
+      home: const PhoneAuthScreen(),
     );
   }
 }

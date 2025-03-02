@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
-ThemeData darkTheme = ThemeData(
+final ThemeData darkTheme = ThemeData(
+  progressIndicatorTheme: ProgressIndicatorThemeData(color: Colors.white),
   brightness: Brightness.dark,
   appBarTheme: AppBarTheme(
-    backgroundColor: Colors.transparent,
+    scrolledUnderElevation: 0,
+    backgroundColor: Colors.black,
     foregroundColor: Colors.white,
   ),
   scaffoldBackgroundColor: Colors.black,
