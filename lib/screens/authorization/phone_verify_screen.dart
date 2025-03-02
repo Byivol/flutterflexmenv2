@@ -14,8 +14,9 @@ class PhoneVerifyScreen extends StatefulWidget {
 
 class _PhoneVerifyScreenState extends State<PhoneVerifyScreen> {
   TextEditingController textEditingController = TextEditingController();
-  late StreamController<ErrorAnimationType> errorController;
+  final _focusNode = FocusNode();
 
+  late StreamController<ErrorAnimationType> errorController;
   late final bool isDarkMode;
   late Timer _timer;
   int _start = 5;
@@ -73,105 +74,100 @@ class _PhoneVerifyScreenState extends State<PhoneVerifyScreen> {
         ),
       ),
       body: Center(
-        child: SingleChildScrollView(
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          physics: BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Enter code"),
-              SizedBox(height: 10),
-              Text(
-                "We have sent a text message to your phone number.",
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Enter code"),
+            SizedBox(height: 10),
+            Text(
+              "We have sent a text message to your phone number.",
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+            ),
+            SizedBox(height: 20),
+            PinCodeTextField(
+              focusNode: _focusNode,
+              mainAxisAlignment: MainAxisAlignment.center,
+              pinTheme: PinTheme(
+                activeFillColor: Colors.transparent,
+                shape: PinCodeFieldShape.box,
+                fieldOuterPadding: EdgeInsets.symmetric(horizontal: 8),
+                borderRadius: BorderRadius.circular(15),
+                fieldHeight: 68,
+                fieldWidth: 48,
+                borderWidth: 1,
+                errorBorderWidth: 1,
+                activeBorderWidth: 1,
+                disabledBorderWidth: 1,
+                selectedBorderWidth: 1,
+                inactiveBorderWidth: 1,
+                inactiveFillColor: Colors.transparent,
+                selectedFillColor: Colors.transparent,
+                activeColor: activeBorderColor,
+                inactiveColor: inactiveBorderColor,
+                selectedColor: fillColor,
+                errorBorderColor: Colors.red,
               ),
-              SizedBox(height: 20),
-              PinCodeTextField(
-                mainAxisAlignment: MainAxisAlignment.center,
-                pinTheme: PinTheme(
-                  activeFillColor: Colors.transparent,
-                  shape: PinCodeFieldShape.box,
-                  fieldOuterPadding: EdgeInsets.symmetric(horizontal: 8),
-                  borderRadius: BorderRadius.circular(15),
-                  fieldHeight: 68,
-                  fieldWidth: 48,
-                  borderWidth: 1,
-                  errorBorderWidth: 1,
-                  activeBorderWidth: 1,
-                  disabledBorderWidth: 1,
-                  selectedBorderWidth: 1,
-                  inactiveBorderWidth: 1,
-                  inactiveFillColor: Colors.transparent,
-                  selectedFillColor: Colors.transparent,
-                  activeColor: activeBorderColor,
-                  inactiveColor: inactiveBorderColor,
-                  selectedColor: fillColor,
-                  errorBorderColor: Colors.red,
+              appContext: context,
+              length: 6,
+              obscureText: false,
+              animationType: AnimationType.fade,
+              backgroundColor: Colors.transparent,
+              enableActiveFill: true,
+              errorAnimationController: errorController,
+              controller: textEditingController,
+              onCompleted: (v) async {
+                try {
+                  final cred = PhoneAuthProvider.credential(
+                    verificationId: widget.verificationId,
+                    smsCode: textEditingController.text,
+                  );
+                  FirebaseAuth auth = FirebaseAuth.instance;
+                  await auth.setSettings(
+                    appVerificationDisabledForTesting: true,
+                  );
+                  await auth.signInWithCredential(cred);
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomeScreen()),
+                  );
+                } catch (e) {}
+              },
+              onChanged: (s) {},
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed:
+                      _isButtonDisabled
+                          ? null
+                          : () {
+                            setState(() {
+                              _start = 5;
+                              _startTimer();
+                            });
+                          },
+                  child: Text(
+                    "Send code again",
+                    style: TextStyle(
+                      color: _isButtonDisabled ? Colors.grey : Colors.green,
+                    ),
+                  ),
                 ),
-                appContext: context,
-                length: 6,
-                obscureText: false,
-                animationType: AnimationType.fade,
-                backgroundColor: Colors.transparent,
-                enableActiveFill: true,
-                errorAnimationController: errorController,
-                controller: textEditingController,
-                onCompleted: (v) async {
-                  try {
-                    final cred = PhoneAuthProvider.credential(
-                      verificationId: widget.verificationId,
-                      smsCode: textEditingController.text,
-                    );
-                    FirebaseAuth auth = FirebaseAuth.instance;
-                    await auth.setSettings(
-                      appVerificationDisabledForTesting: true,
-                    );
-                    await auth.signInWithCredential(cred);
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
-                      ),
-                    );
-                  } catch (e) {}
-                },
-                onChanged: (s) {},
-              ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    onPressed:
-                        _isButtonDisabled
-                            ? null
-                            : () {
-                              setState(() {
-                                _start = 5;
-                                _startTimer();
-                              });
-                            },
-                    child: Text(
-                      "Send code again",
-                      style: TextStyle(
-                        color: _isButtonDisabled ? Colors.grey : Colors.green,
-                      ),
-                    ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 1),
+                  child: Text(
+                    "00:${_start.toString().padLeft(2, '0')}",
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 1),
-                    child: Text(
-                      "00:${_start.toString().padLeft(2, '0')}",
-                      style: TextStyle(fontSize: 14, color: Colors.grey),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 200),
-            ],
-          ),
+                ),
+              ],
+            ),
+            SizedBox(height: 200),
+          ],
         ),
       ),
     );

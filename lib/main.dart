@@ -18,6 +18,10 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],
+  );
   runApp(const MainApp());
   FlutterNativeSplash.remove();
 }
@@ -31,7 +35,6 @@ class MainApp extends StatelessWidget {
       showSemanticsDebugger: false,
       debugShowMaterialGrid: false,
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.light,
       theme: lightTheme,
       darkTheme: darkTheme,
       home: const PhoneAuthScreen(),

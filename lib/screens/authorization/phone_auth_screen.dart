@@ -13,8 +13,9 @@ class PhoneAuthScreen extends StatefulWidget {
 class PhoneAuthScreenState extends State<PhoneAuthScreen> {
   final _formKey = GlobalKey<FormState>();
   final _manualFormatController = TextEditingController();
+  final _focusNode = FocusNode();
   String? _errorText;
-  String? _verificationId;
+
   late final bool isDarkMode;
   late final String logoPath;
   bool isLoading = false;
@@ -78,15 +79,19 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: Column(
             children: [
               Image.asset(logoPath, width: 300),
-              Padding(
-                padding: const EdgeInsets.only(left: 26, bottom: 20),
-                child: Text(
-                  'SIGN IN',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 26, bottom: 20),
+                  child: Text(
+                    'SIGN IN',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
               Form(
@@ -97,6 +102,7 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextFormField(
+                        focusNode: _focusNode,
                         keyboardType: TextInputType.phone,
                         inputFormatters: [
                           LibPhonenumberTextFormatter(
