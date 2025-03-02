@@ -3,6 +3,9 @@ name: iOS-ipa-build
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write  # ✅ ДАЁМ ДОСТУП К РЕЛИЗАМ
+
 jobs:
   build-ios:
     name: 🎉 iOS Build
@@ -14,8 +17,8 @@ jobs:
         with:
           channel: 'stable'
           architecture: x64
+
       - run: flutter pub get
-      
 
       - run: pod repo update
         working-directory: ios
