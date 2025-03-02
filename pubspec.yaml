@@ -1,0 +1,47 @@
+name: theflexmen
+description: "Flutter Flex Men."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  webview_flutter: ^4.10.0
+  flutter_native_splash: ^2.4.0
+  flutter_libphonenumber: ^2.5.1
+  pin_code_fields: ^8.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: "^0.13.1"
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icons/
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  andrioid: true
+  remove_alpha_ios: true
+  image_path: "assets/icons/logo_app.jpg"
+  image_path_ios: "assets/icons/logo_app.jpg"
+  min_sdk_android: 21
+  web:
+    generate: true
+    image_path: "assets/icons/logo_app.jpg"
+  macos:
+    generate: true
+    image_path: "assets/icons/logo_app.jpg"
+
+flutter_native_splash:
+  color: "#ffffff"
+  color_dark: "#000000"
+  image_dark: assets\icons\logo_white.png
+  image: assets\icons\logo.png
+  fullscreen: true
