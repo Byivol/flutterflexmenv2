@@ -28,24 +28,28 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
       setState(() {
         isLoading = true;
       });
-      FirebaseAuth auth = FirebaseAuth.instance;
-      await auth.verifyPhoneNumber(
-        phoneNumber: _manualFormatController.text,
-        verificationCompleted: (phoneAuthCredential) {},
-        codeSent: (verificationId, forceResendingToken) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder:
-                  (context) =>
-                      PhoneVerifyScreen(verificationId: verificationId),
-            ),
-          ).then((_) {});
-        },
-        verificationFailed: (FirebaseAuthException error) {},
+      try {
+        FirebaseAuth auth = FirebaseAuth.instance;
+        await auth.verifyPhoneNumber(
+          phoneNumber: _manualFormatController.text,
+          verificationCompleted: (phoneAuthCredential) {},
+          codeSent: (verificationId, forceResendingToken) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder:
+                    (context) =>
+                        PhoneVerifyScreen(verificationId: verificationId),
+              ),
+            ).then((_) {});
+          },
+          verificationFailed: (FirebaseAuthException error) {},
 
-        codeAutoRetrievalTimeout: (verificationId) {},
-      );
+          codeAutoRetrievalTimeout: (verificationId) {},
+        );
+      } catch (e) {
+        _errorText = '$e';
+      }
     }
   }
 
