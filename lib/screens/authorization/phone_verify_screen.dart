@@ -123,9 +123,7 @@ class _PhoneVerifyScreenState extends State<PhoneVerifyScreen> {
                     smsCode: textEditingController.text,
                   );
                   FirebaseAuth auth = FirebaseAuth.instance;
-                  await auth.setSettings(
-                    appVerificationDisabledForTesting: true,
-                  );
+
                   await auth.signInWithCredential(cred);
 
                   Navigator.push(
