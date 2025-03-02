@@ -82,14 +82,11 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
           child: Column(
             children: [
               Image.asset(logoPath, width: 300),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 26, bottom: 20),
-                  child: Text(
-                    'SIGN IN',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
+              Padding(
+                padding: const EdgeInsets.only(left: 26, bottom: 20),
+                child: Text(
+                  'SIGN IN',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ),
               Form(
