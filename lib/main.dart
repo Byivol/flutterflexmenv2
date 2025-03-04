@@ -1,9 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter/services.dart';
-
 import 'screens/authorization/phone_auth_screen.dart' show PhoneAuthScreen;
 
+import 'screens/main/home_screen.dart' show HomeScreen;
 import 'themes/dark_theme.dart';
 import 'themes/light_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,7 +23,7 @@ void main() async {
     SystemUiMode.manual,
     overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],
   );
-  runApp(const MainApp());
+  runApp(MainApp());
   FlutterNativeSplash.remove();
 }
 
@@ -37,7 +38,12 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
       darkTheme: darkTheme,
-      home: const PhoneAuthScreen(),
+      home: _getInitialScreen(),
     );
+  }
+
+  Widget _getInitialScreen() {
+    final user = FirebaseAuth.instance.currentUser;
+    return user != null ? HomeScreen() : PhoneAuthScreen();
   }
 }

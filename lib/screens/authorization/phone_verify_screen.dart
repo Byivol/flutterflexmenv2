@@ -2,7 +2,8 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:theflexmen/screens/main/mainscr.dart';
+
+import '../main/home_screen.dart';
 
 class PhoneVerifyScreen extends StatefulWidget {
   final String verificationId;
@@ -123,7 +124,9 @@ class _PhoneVerifyScreenState extends State<PhoneVerifyScreen> {
                     smsCode: textEditingController.text,
                   );
                   FirebaseAuth auth = FirebaseAuth.instance;
-
+                  await auth.setSettings(
+                    appVerificationDisabledForTesting: true,
+                  );
                   await auth.signInWithCredential(cred);
 
                   Navigator.push(

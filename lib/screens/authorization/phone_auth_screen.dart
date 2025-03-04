@@ -30,6 +30,7 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
       });
       try {
         FirebaseAuth auth = FirebaseAuth.instance;
+        await auth.setSettings(appVerificationDisabledForTesting: true);
         await auth.verifyPhoneNumber(
           phoneNumber: _manualFormatController.text,
           verificationCompleted: (phoneAuthCredential) {},
@@ -73,7 +74,8 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
+          clipBehavior: Clip.none,
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: Column(
             children: [

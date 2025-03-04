@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final ThemeData darkTheme = ThemeData(
+ThemeData darkTheme = ThemeData(
   progressIndicatorTheme: ProgressIndicatorThemeData(color: Colors.white),
   brightness: Brightness.dark,
   appBarTheme: AppBarTheme(
@@ -44,14 +44,26 @@ final ThemeData darkTheme = ThemeData(
   ),
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
-      foregroundColor: Colors.black,
+      foregroundColor: Colors.white,
       textStyle: TextStyle(fontWeight: FontWeight.w500),
       overlayColor: Colors.transparent,
     ),
   ),
+  iconTheme: IconThemeData(color: Colors.black),
+
+  expansionTileTheme: ExpansionTileThemeData(
+    collapsedTextColor: Colors.black,
+    textColor: Colors.black,
+    shape: const Border(
+      top: BorderSide.none,
+      bottom: BorderSide(color: Color.fromARGB(255, 0, 0, 0), width: 0),
+    ),
+  ),
   filledButtonTheme: FilledButtonThemeData(
     style: FilledButton.styleFrom(
-      textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+      iconColor: Colors.black,
+      iconSize: 22,
+      textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
       backgroundColor: Colors.white,
       foregroundColor: Colors.black,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
