@@ -5,17 +5,15 @@ class QrCodeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Номер карты', style: TextStyle(fontSize: 20)),
-        leadingWidth: 100,
-        leading: Center(
-          child: TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Закрыть'),
-          ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         centerTitle: true,
       ),
@@ -24,23 +22,20 @@ class QrCodeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RichText(
-              text: const TextSpan(
-                text: 'THE',
+              text: TextSpan(
                 style: TextStyle(
                   letterSpacing: 14,
-                  height: 0,
                   fontSize: 55,
-                  fontWeight: FontWeight.w100,
+                  color: isDarkMode ? Colors.white : Colors.black,
                 ),
-                children: <TextSpan>[
+                children: const <TextSpan>[
+                  TextSpan(
+                    text: 'THE',
+                    style: TextStyle(fontWeight: FontWeight.w100),
+                  ),
                   TextSpan(
                     text: 'FLEX',
-                    style: TextStyle(
-                      letterSpacing: 14,
-                      height: 0,
-                      fontSize: 55,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ],
               ),

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_week/flutter_calendar_week.dart';
-import 'package:intl/intl.dart';
 
-import 'getlessons.dart';
-import 'lesson.dart';
-import 'lesson_widget.dart';
+import '../../firebase_func/getlessons.dart';
+import '../../firebase_func/lesson.dart';
+import '../../lesson_widget.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
@@ -51,7 +50,7 @@ class _ScheduleState extends State<ScheduleScreen> {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 10,
                   spreadRadius: 1,
                 ),
@@ -59,54 +58,58 @@ class _ScheduleState extends State<ScheduleScreen> {
             ),
             child: CalendarWeek(
               controller: _controller,
-              height: 140,
+              height: 110,
               showMonth: true,
               dayShapeBorder: BoxShape.circle,
               pressedDateBackgroundColor: Colors.black,
               todayDateStyle: TextStyle(color: Colors.black),
               dateStyle: TextStyle(color: Colors.black),
-              dayOfWeekStyle: TextStyle(fontSize: 20, color: Colors.black),
-              weekendsStyle: TextStyle(color: Colors.black),
+              pressedDateStyle: TextStyle(color: Colors.white),
+              dayOfWeekStyle: TextStyle(fontSize: 10, color: Colors.black),
+              weekendsStyle: TextStyle(fontSize: 20, color: Colors.black),
               minDate: DateTime.now().add(Duration(days: -3)),
               maxDate: DateTime.now().add(Duration(days: 10)),
-              month: [
-                'ЯНВАРЬ',
-                'ФЕВРАЛЬ',
-                'МАРТ',
-                'АПРЕЛЬ',
-                'МАЙ',
-                'ИЮНЬ',
-                'ИЮЛЬ',
-                'АВГУСТ',
-                'СЕНТЯБРЬ',
-                'ОКТЯБРЬ',
-                'НОЯБРЬ',
-                'ДЕКАБРЬ',
-              ],
               dayOfWeek: ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'],
               onDatePressed: (DateTime datetime) {
                 setState(() {
                   _selectedDate = datetime;
                 });
               },
-              monthViewBuilder:
-                  (DateTime time) => Align(
-                    alignment: FractionalOffset.center,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 4),
-                      child: Text(
-                        DateFormat.yMMMM().format(time),
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600,
-                        ),
+              monthViewBuilder: (DateTime time) {
+                int monthIndex = time.month - 1;
+                final String monthName =
+                    [
+                      'ЯНВАРЬ',
+                      'ФЕВРАЛЬ',
+                      'МАРТ',
+                      'АПРЕЛЬ',
+                      'МАЙ',
+                      'ИЮНЬ',
+                      'ИЮЛЬ',
+                      'АВГУСТ',
+                      'СЕНТЯБРЬ',
+                      'ОКТЯБРЬ',
+                      'НОЯБРЬ',
+                      'ДЕКАБРЬ',
+                    ][monthIndex];
+
+                return Align(
+                  alignment: FractionalOffset.center,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 4),
+                    child: Text(
+                      '$monthName ${time.year}',
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
-              decorations: [],
+                );
+              },
             ),
           ),
           Expanded(

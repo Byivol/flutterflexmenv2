@@ -6,7 +6,6 @@ class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         titleSpacing: -1,
         title: const Text('Уведомления', style: TextStyle(fontSize: 20)),

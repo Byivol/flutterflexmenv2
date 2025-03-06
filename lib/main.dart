@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter/services.dart';
-import 'screens/authorization/phone_auth_screen.dart' show PhoneAuthScreen;
-
-import 'screens/main/home_screen.dart' show HomeScreen;
+import 'screens/auth/input_phone_number/phone_auth_screen.dart'
+    show PhoneAuthScreen;
+import 'screens/main/main_screen.dart';
 import 'themes/dark_theme.dart';
 import 'themes/light_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,6 +13,7 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   SystemChrome.setPreferredOrientations([
@@ -44,6 +45,6 @@ class MainApp extends StatelessWidget {
 
   Widget _getInitialScreen() {
     final user = FirebaseAuth.instance.currentUser;
-    return user != null ? HomeScreen() : PhoneAuthScreen();
+    return user != null ? MainScreen() : PhoneAuthScreen();
   }
 }

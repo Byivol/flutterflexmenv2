@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'lesson.dart';
-import 'lesson_widget.dart';
-import 'notification_screen.dart';
-import 'qrcode_screen.dart';
-import 'refresh_indicator.dart';
-import 'getlessons.dart';
-import 'schedule_screen.dart';
+import '../firebase_func/lesson.dart';
+import '../lesson_widget.dart';
+import 'routes/notification_screen.dart';
+import 'routes/qrcode_screen.dart';
+import '../refresh_indicator.dart';
+import '../firebase_func/getlessons.dart';
+import 'routes/schedule_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,10 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<void> _refreshLessons() async {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,36 +41,18 @@ class _HomeScreenState extends State<HomeScreen> {
           child: RichText(
             overflow: TextOverflow.ellipsis,
             text: TextSpan(
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: TextStyle(
+                fontWeight: FontWeight.w300,
+                fontSize: 17,
+                letterSpacing: 2,
+              ),
               children: [
+                TextSpan(text: 'THE'),
                 TextSpan(
-                  text: 'THE',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w300,
-                    letterSpacing: 2,
-                  ),
+                  text: ' FLEX ',
+                  style: TextStyle(fontWeight: FontWeight.w600),
                 ),
-                TextSpan(
-                  text: ' ',
-                  style: TextStyle(fontSize: 25, letterSpacing: -2),
-                ),
-                TextSpan(
-                  text: 'FLEX ',
-                  style: TextStyle(
-                    letterSpacing: 2,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                TextSpan(
-                  text: 'men | Тюмень',
-                  style: TextStyle(
-                    letterSpacing: 2,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
+                TextSpan(text: 'men | Тюмень'),
               ],
             ),
           ),
@@ -90,11 +68,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () async {
-              final Uri launchUri = Uri(scheme: 'tel', path: '89292615056');
-              await launchUrl(launchUri);
-            },
-            icon: const Icon(Icons.call, size: 26),
+            onPressed:
+                () async =>
+                    await launchUrl(Uri(scheme: 'tel', path: '89292615056')),
+            icon: const Icon(Icons.call),
           ),
           IconButton(
             onPressed: () {
@@ -105,13 +82,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             },
-            icon: const Icon(Icons.notifications, size: 30),
+            icon: const Icon(Icons.notifications),
           ),
         ],
       ),
+
       backgroundColor: Colors.white,
       body: CheckMarkIndicator(
-        onRefresh: _refreshLessons,
+        onRefresh: _refreshScreen,
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics(),
@@ -213,65 +191,76 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
-                child: ExpansionTile(
-                  initiallyExpanded: true,
-                  onExpansionChanged: (e) {},
-                  title: const Text("Ближайшие занятия:"),
-                  children: [
-                    FutureBuilder<List<Lesson>>(
-                      future: getLessonsforDate(DateTime.now()),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
+                child: Theme(
+                  data: Theme.of(context).copyWith(
+                    splashFactory: NoSplash.splashFactory,
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                  ),
+                  child: ExpansionTile(
+                    shape: Border.all(color: Colors.transparent),
+                    tilePadding: EdgeInsets.symmetric(horizontal: 8),
+                    initiallyExpanded: true,
+                    onExpansionChanged: (e) {},
+                    title: const Text("Ближайшие занятия:"),
+                    children: [
+                      FutureBuilder<List<Lesson>>(
+                        future: getLessonsforDate(DateTime.now()),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
                               child: SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: CircularProgressIndicator.adaptive(
-                                  backgroundColor: Colors.black,
-                                  strokeWidth: 3,
+                                height: 200,
+                                child: Center(
+                                  child: SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator.adaptive(
+                                      backgroundColor: Colors.black,
+                                      strokeWidth: 3,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        } else if (snapshot.hasError) {
-                          return Center(
-                            child: Text(
-                              'Ошибка: ${snapshot.error}',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.black,
+                            );
+                          } else if (snapshot.hasError) {
+                            return Center(
+                              child: Text(
+                                'Ошибка: ${snapshot.error}',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black,
+                                ),
                               ),
-                            ),
-                          );
-                        } else if (!snapshot.hasData ||
-                            snapshot.data!.isEmpty) {
-                          return const Center(
-                            child: Text(
-                              'Нет доступных занятий',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.black,
+                            );
+                          } else if (!snapshot.hasData ||
+                              snapshot.data!.isEmpty) {
+                            return const Center(
+                              child: Text(
+                                'Нет доступных занятий',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black,
+                                ),
                               ),
-                            ),
-                          );
-                        } else {
-                          final lessons = snapshot.data!;
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: lessons.length,
-                            itemBuilder: (context, index) {
-                              final lesson = lessons[index];
-                              return LessonWidget(lesson: lesson);
-                            },
-                          );
-                        }
-                      },
-                    ),
-                  ],
+                            );
+                          } else {
+                            final lessons = snapshot.data!;
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: lessons.length,
+                              itemBuilder: (context, index) {
+                                final lesson = lessons[index];
+                                return LessonWidget(lesson: lesson);
+                              },
+                            );
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -279,5 +268,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _refreshScreen() async {
+    setState(() {});
   }
 }

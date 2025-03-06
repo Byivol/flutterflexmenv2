@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(
-  progressIndicatorTheme: ProgressIndicatorThemeData(color: Colors.black),
+  progressIndicatorTheme: ProgressIndicatorThemeData(color: Colors.white),
   brightness: Brightness.light,
   appBarTheme: AppBarTheme(
     scrolledUnderElevation: 0,
-    backgroundColor: Colors.white,
-    foregroundColor: Colors.black,
+    backgroundColor: Colors.black,
   ),
   scaffoldBackgroundColor: Colors.white,
   textSelectionTheme: TextSelectionThemeData(
     cursorColor: Colors.black,
-    selectionColor: Colors.blue.withValues(alpha: 76),
-    selectionHandleColor: Colors.green,
+    selectionColor: Colors.blue.withValues(alpha: 0.3),
+    selectionHandleColor: Colors.black,
   ),
   inputDecorationTheme: InputDecorationTheme(
     enabledBorder: OutlineInputBorder(
@@ -67,5 +66,15 @@ ThemeData lightTheme = ThemeData(
       foregroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
     ),
+  ),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    elevation: 0,
+    backgroundColor: Colors.black,
+    selectedIconTheme: IconThemeData(size: 20, color: Colors.white),
+    selectedItemColor: Colors.white,
+    selectedLabelStyle: TextStyle(fontSize: 10, color: Colors.white),
+    unselectedIconTheme: IconThemeData(size: 20, color: Colors.grey),
+    unselectedItemColor: Colors.grey,
+    unselectedLabelStyle: TextStyle(fontSize: 10, color: Colors.grey),
   ),
 );

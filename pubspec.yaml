@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 0.1.0
 
 environment:
-  sdk: ^3.7.0
+  sdk: ">=3.7.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -56,4 +56,9 @@ flutter_native_splash:
   color_dark: "#000000"
   image_dark: assets\icons\logo_white.png
   image: assets\icons\logo.png
+  android_12:
+    image: assets\icons\logo.png
+    icon_background_color: "#ffffff"
+    image_dark: assets\icons\logo_white.png
+    icon_background_color_dark: "#000000"
   fullscreen: false

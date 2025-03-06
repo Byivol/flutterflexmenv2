@@ -11,8 +11,8 @@ ThemeData darkTheme = ThemeData(
   scaffoldBackgroundColor: Colors.black,
   textSelectionTheme: TextSelectionThemeData(
     cursorColor: Colors.white,
-    selectionColor: Colors.blue.withValues(alpha: 76),
-    selectionHandleColor: Colors.green,
+    selectionColor: Colors.blue.withValues(alpha: 0.3),
+    selectionHandleColor: Colors.black,
   ),
   inputDecorationTheme: InputDecorationTheme(
     enabledBorder: OutlineInputBorder(
@@ -50,7 +50,6 @@ ThemeData darkTheme = ThemeData(
     ),
   ),
   iconTheme: IconThemeData(color: Colors.black),
-
   expansionTileTheme: ExpansionTileThemeData(
     collapsedTextColor: Colors.black,
     textColor: Colors.black,
@@ -68,5 +67,15 @@ ThemeData darkTheme = ThemeData(
       foregroundColor: Colors.black,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
     ),
+  ),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    elevation: 0,
+    backgroundColor: Colors.black,
+    selectedIconTheme: IconThemeData(size: 20, color: Colors.white),
+    selectedItemColor: Colors.white,
+    selectedLabelStyle: TextStyle(fontSize: 10, color: Colors.white),
+    unselectedIconTheme: IconThemeData(size: 20, color: Colors.grey),
+    unselectedItemColor: Colors.grey,
+    unselectedLabelStyle: TextStyle(fontSize: 10, color: Colors.grey),
   ),
 );
