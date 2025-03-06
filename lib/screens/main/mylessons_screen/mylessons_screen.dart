@@ -23,49 +23,44 @@ class _MyLessonsScreenState extends State<MyLessonsScreen> {
         leadingWidth: 100,
         centerTitle: true,
       ),
-      body: CheckMarkIndicator(
-        onRefresh: _refreshScreen,
-        child: FutureBuilder<List<Lesson>>(
-          future: getMyLessons(FirebaseAuth.instance.currentUser!.uid),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator.adaptive(
-                  backgroundColor: Colors.black,
+      body: FutureBuilder<List<Lesson>>(
+        future: getMyLessons(FirebaseAuth.instance.currentUser!.uid),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator.adaptive(
+                backgroundColor: Colors.black,
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return const Center(child: Text('Ошибка загрузки данных.'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(
+              child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                clipBehavior: Clip.none,
+                child: Column(
+                  children: [
+                    Text(
+                      textAlign: TextAlign.center,
+                      'Запишитесь на занятие',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ],
                 ),
-              );
-            } else if (snapshot.hasError) {
-              return const Center(child: Text('Ошибка загрузки данных.'));
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(
-                child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics(),
-                  ),
-                  clipBehavior: Clip.none,
-                  child: Column(
-                    children: [
-                      Text(
-                        textAlign: TextAlign.center,
-                        'Запишитесь на занятие',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            } else {
-              final lessons = snapshot.data!;
-              return ListView.builder(
-                itemCount: lessons.length,
-                itemBuilder: (context, index) {
-                  final lesson = lessons[index];
-                  return LessonWidget(lesson: lesson);
-                },
-              );
-            }
-          },
-        ),
+              ),
+            );
+          } else {
+            final lessons = snapshot.data!;
+            return ListView.builder(
+              itemCount: lessons.length,
+              itemBuilder: (context, index) {
+                final lesson = lessons[index];
+                return LessonWidget(lesson: lesson);
+              },
+            );
+          }
+        },
       ),
     );
   }

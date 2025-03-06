@@ -48,7 +48,7 @@ class _CheckMarkIndicatorState extends State<CheckMarkIndicator>
               animation: controller,
               builder: (BuildContext context, Widget? _) {
                 return Container(
-                  height: controller.value * 150.0,
+                  height: controller.value * 160.0,
                   width: double.infinity,
                   color: const Color.fromARGB(135, 255, 255, 255),
                   child: Stack(
