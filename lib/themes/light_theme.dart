@@ -4,6 +4,7 @@ ThemeData lightTheme = ThemeData(
   progressIndicatorTheme: ProgressIndicatorThemeData(color: Colors.white),
   brightness: Brightness.light,
   appBarTheme: AppBarTheme(
+    foregroundColor: Colors.white,
     scrolledUnderElevation: 0,
     backgroundColor: Colors.black,
   ),
