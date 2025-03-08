@@ -4,7 +4,6 @@ import '../firebase_func/lesson.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../lesson_widget.dart';
-import '../refresh_indicator.dart';
 
 class MyLessonsScreen extends StatefulWidget {
   const MyLessonsScreen({super.key});
@@ -63,9 +62,5 @@ class _MyLessonsScreenState extends State<MyLessonsScreen> {
         },
       ),
     );
-  }
-
-  Future<void> _refreshScreen() async {
-    setState(() {});
   }
 }
