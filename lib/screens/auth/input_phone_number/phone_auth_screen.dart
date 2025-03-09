@@ -93,9 +93,10 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
         _isLoading = true;
       });
       try {
-        FirebaseAuth auth = FirebaseAuth.instance;
-        await auth.setSettings(appVerificationDisabledForTesting: true);
-        await auth.verifyPhoneNumber(
+        await FirebaseAuth.instance.setSettings(
+          appVerificationDisabledForTesting: true,
+        );
+        await FirebaseAuth.instance.verifyPhoneNumber(
           phoneNumber: _phoneNumberController.text,
           verificationCompleted: (phoneAuthCredential) {},
           codeSent: (verificationId, forceResendingToken) {
