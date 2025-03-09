@@ -92,46 +92,59 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
         );
         _isLoading = true;
       });
-      FirebaseAuth auth = FirebaseAuth.instance;
-      await auth.setSettings(appVerificationDisabledForTesting: true);
-      await auth.verifyPhoneNumber(
-        phoneNumber: _phoneNumberController.text,
-        verificationCompleted: (phoneAuthCredential) {},
-        codeSent: (verificationId, forceResendingToken) {
-          setState(() {
-            if (_isLoading) {
-              Navigator.pop(context);
-              _isLoading = false;
-            }
-          });
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder:
-                  (context) => PhoneVerifyScreen(
-                    verificationId: verificationId,
-                    phoneNumber: _phoneNumberController.text,
-                  ),
-            ),
-          );
-        },
-        verificationFailed: (FirebaseAuthException error) {
-          setState(() {
-            if (_isLoading) {
-              Navigator.pop(context);
-              _isLoading = false;
-            }
-          });
-        },
-        codeAutoRetrievalTimeout: (verificationId) {
-          setState(() {
-            if (_isLoading) {
-              Navigator.pop(context);
-              _isLoading = false;
-            }
-          });
-        },
-      );
+      try {
+        FirebaseAuth auth = FirebaseAuth.instance;
+        await auth.setSettings(appVerificationDisabledForTesting: true);
+        await auth.verifyPhoneNumber(
+          phoneNumber: _phoneNumberController.text,
+          verificationCompleted: (phoneAuthCredential) {},
+          codeSent: (verificationId, forceResendingToken) {
+            setState(() {
+              if (_isLoading) {
+                Navigator.pop(context);
+                _isLoading = false;
+              }
+            });
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder:
+                    (context) => PhoneVerifyScreen(
+                      verificationId: verificationId,
+                      phoneNumber: _phoneNumberController.text,
+                    ),
+              ),
+            );
+          },
+          verificationFailed: (FirebaseAuthException error) {
+            setState(() {
+              if (_isLoading) {
+                Navigator.pop(context);
+                _isLoading = false;
+              }
+            });
+          },
+          codeAutoRetrievalTimeout: (verificationId) {
+            setState(() {
+              if (_isLoading) {
+                Navigator.pop(context);
+                _isLoading = false;
+              }
+            });
+          },
+        );
+      } catch (e) {
+        setState(() {
+          if (_isLoading) {
+            Navigator.pop(context);
+            _isLoading = false;
+          }
+        });
+
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Произошла ошибка: $e")));
+      }
     }
   }
 }
